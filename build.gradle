@@ -1,0 +1,39 @@
+import fr.xgouchet.gradle.Dependencies
+
+buildscript {
+
+    repositories {
+        google()
+        mavenCentral()
+        maven { url Dependencies.Repositories.Google }
+        maven { url Dependencies.Repositories.Gradle }
+        maven { url Dependencies.Repositories.JitPack }
+        jcenter()
+    }
+
+    dependencies {
+        classpath Dependencies.ClassPaths.Kotlin
+        classpath Dependencies.ClassPaths.DependencyVersions
+        classpath Dependencies.ClassPaths.JUnitPlatform
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url Dependencies.Repositories.Google }
+        maven { url Dependencies.Repositories.Gradle }
+        maven { url Dependencies.Repositories.JitPack }
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+wrapper {
+    gradleVersion = '4.9'
+    distributionType = Wrapper.DistributionType.ALL
+}

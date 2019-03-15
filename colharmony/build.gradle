@@ -1,0 +1,48 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" 
+    id 'com.github.ben-manes.versions'
+    id "io.gitlab.arturbosch.detekt" 
+}
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'application'
+
+import fr.xgouchet.gradle.Dependencies
+
+dependencies {
+    compile Dependencies.Libraries.KotlinJdk8
+    compile Dependencies.Libraries.Retrofit
+    compile Dependencies.Libraries.ArgParser
+}
+
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+
+mainClassName = 'fr.xgouchet.colharmony.Main'
+jar {
+    manifest {
+        attributes 'Main-Class': 'fr.xgouchet.colharmony.Main'
+    }
+}
+
+
+// region Detekt
+
+detekt {
+    toolVersion = "1.0.0.RC9"
+    input = files("$projectDir/src/main/kotlin")
+    config = files("$project.rootDir/config/detekt-config.yml")
+    filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+    reports {
+        xml {
+            enabled = true
+            destination = file("build/reports/detekt.xml")
+        }
+    }
+}
+
+//check.dependsOn detektCheck
+
+// endregion
